@@ -762,7 +762,7 @@ components:
       required: true
       schema:
         type: string
-        example: SENSITIVE
+        example: V1
 
     field:
       name: field
@@ -1471,8 +1471,8 @@ components:
           description: The description of the tag.
           type: string
       example:
-        name: SENSITIVE
-        description: Contains sensitive information
+        name: V1
+        description: Contains V1 information
 
     TagList:
       type: object

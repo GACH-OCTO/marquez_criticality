@@ -54,11 +54,45 @@ export const theme = createTheme({
     secondary: {
       main: '#454f5b',
     },
+    vital: {
+      main: '#EB75C5',
+      light: '#F2A6DA',
+      dark: '#A11775',
+      contrastText: '#fff',
+    },
+    personnel: {
+      main: '#E3DF76',
+      light: '#EAE799', 
+      dark: '#BAB526',  
+      contrastText: '#000', 
+    },
+    strategique: {
+      main: '#40A6FF',
+      light: '#ADD9FF',
+      dark: '#0062B8',
+      contrastText: '#fff',
+    },
   },
   zIndex: {
     snackbar: 9999,
   },
 })
+
+import { PaletteColor } from '@mui/material/styles';
+
+declare module '@mui/material/styles' {
+  interface Palette {
+    personnel: PaletteColor;
+    vital: PaletteColor;
+    strategique: PaletteColor;
+  }
+
+  interface PaletteOptions {
+    personnel?: PaletteColor;
+    vital?: PaletteColor;
+    strategique?: PaletteColor;
+  }
+}
 
 export const THEME_EXTRA = {
   typography: {

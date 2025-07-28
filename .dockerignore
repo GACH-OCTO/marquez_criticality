@@ -4,3 +4,4 @@ Dockerfile
 api/build
 docs
 web/node_modules
+node_modules

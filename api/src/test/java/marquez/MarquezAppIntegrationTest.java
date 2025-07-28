@@ -240,7 +240,7 @@ public class MarquezAppIntegrationTest extends BaseIntegrationTest {
 
     // (4) Add field to db table
     final List<Field> original = dbTable.getFields();
-    final List<Field> added = ImmutableList.of(newFieldWith(PII.getName()), newField(), newField());
+    final List<Field> added = ImmutableList.of(newFieldWith(P1.getName()), newField(), newField());
     final List<Field> modifiedFields = Lists.newArrayList(Iterables.concat(original, added));
 
     final DbTableMeta modifiedDbTableMeta =
@@ -563,7 +563,7 @@ public class MarquezAppIntegrationTest extends BaseIntegrationTest {
   @Test
   public void testApp_listTags() {
     final Set<Tag> tags = client.listTags();
-    assertThat(tags).containsExactlyInAnyOrder(PII, SENSITIVE);
+    assertThat(tags).containsExactlyInAnyOrder(P1, V1);
   }
 
   @Test

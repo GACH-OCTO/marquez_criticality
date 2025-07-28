@@ -176,9 +176,9 @@ public class FlowIntegrationTest extends BaseIntegrationTest {
                     new Field(
                         "test_field1",
                         "BOOL",
-                        ImmutableSet.of(SENSITIVE.getName()),
+                        ImmutableSet.of(V1.getName()),
                         "test_description")))
-            .tags(ImmutableSet.of(PII.getName()))
+            .tags(ImmutableSet.of(P1.getName()))
             .description(DB_TABLE_DESCRIPTION)
             .runId(runId)
             .build();

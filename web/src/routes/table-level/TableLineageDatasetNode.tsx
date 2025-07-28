@@ -7,7 +7,6 @@ import { PositionedNode } from '../../../libs/graph'
 import { THEME_EXTRA, theme } from '../../helpers/theme'
 import { TableLineageDatasetNodeData } from './nodes'
 import { connect } from 'react-redux'
-
 import * as Redux from 'redux'
 import { Divider } from '@mui/material'
 import { bindActionCreators } from 'redux'
@@ -17,12 +16,17 @@ import { fetchDataset, resetDataset } from '../../store/actionCreators'
 import { formatUpdatedAt } from '../../helpers'
 import { truncateText, truncateTextFront } from '../../helpers/text'
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
+import { alpha } from '@mui/material/styles';
+import React, { useEffect, useState } from 'react'
+import { DatasetWarningBox} from './DatasetWarningBox'
+import {
+  getDataset,
+} from '../../store/requests'
 import Box from '@mui/system/Box'
 import IconButton from '@mui/material/IconButton'
 import MQTooltip from '../../components/core/tooltip/MQTooltip'
 import MqStatus from '../../components/core/status/MqStatus'
 import MqText from '../../components/core/text/MqText'
-import React from 'react'
 
 interface DispatchProps {
   fetchDataset: typeof fetchDataset
@@ -33,6 +37,26 @@ interface StateProps {
   lineage: LineageGraph
   dataset: Dataset
 }
+
+interface nodeCriticityProps {
+  V_Crit: number | null
+  P_Crit: number | null 
+  S_Crit: number | null
+}
+const extractCrit = (tags: string[], prefix: string): number | null =>
+  tags.reduce((acc, tag) => {
+    const match = tag.match(new RegExp(`^${prefix}(\\d)$`));
+    return acc ?? (match ? parseInt(match[1], 10) : null);
+  }, null);
+
+function extractCritValues(tags: string[]): nodeCriticityProps {
+  return {
+    V_Crit: extractCrit(tags, 'V'),
+    P_Crit: extractCrit(tags, 'P'),
+    S_Crit: extractCrit(tags, 'S'),
+  };
+}
+
 
 interface TableLineageDatasetNodeProps {
   node: PositionedNode<'DATASET', TableLineageDatasetNodeData>
@@ -48,12 +72,20 @@ const TableLineageDatasetNode = ({
   resetDataset,
 }: TableLineageDatasetNodeProps & StateProps & DispatchProps) => {
   const isCompact = node.height === COMPACT_HEIGHT
-
-  const navigate = useNavigate()
   const { name, namespace } = useParams()
   const isSelected = name === node.data.dataset.name && namespace === node.data.dataset.namespace
   const [searchParams, setSearchParams] = useSearchParams()
   const isCollapsed = searchParams.get('collapsedNodes')?.split(',').includes(node.id)
+  const navigate = useNavigate()
+
+  const [nodeDataset, setNodeDataset] = useState<Dataset>()
+  useEffect(() => {
+  getDataset(node.data.dataset.namespace, node.data.dataset.name)
+    .then(setNodeDataset)
+    .catch((error) => {
+      console.error("Erreur lors du chargement du dataset :", error);
+    });
+}, []);
 
   const handleClick = () => {
     navigate(
@@ -63,6 +95,45 @@ const TableLineageDatasetNode = ({
     )
   }
 
+  const nodeCriticity = nodeDataset?.tags?.length ? extractCritValues(nodeDataset.tags) : null;
+
+  const dropShadow =
+  nodeCriticity?.P_Crit || nodeCriticity?.V_Crit || nodeCriticity?.S_Crit
+    ? `
+      drop-shadow(-30px 15px ${(6 - (nodeCriticity?.V_Crit ?? 0)) * 10}px ${alpha(theme.palette.vital.main, (nodeCriticity?.V_Crit ?? 0)/10*2)})
+      drop-shadow(0 -20px ${(6 - (nodeCriticity?.P_Crit ?? 0)) * 10}px ${alpha(theme.palette.personnel.main, (nodeCriticity?.P_Crit ?? 0)/10*2)})
+      drop-shadow(30px 15px ${(6 - (nodeCriticity?.S_Crit ?? 0)) * 10}px ${alpha(theme.palette.strategique.main,(nodeCriticity?.S_Crit ?? 0)/10*2)})
+    `
+    : 'none';
+
+
+  /*const displayTags = (nodeCriticity: nodeCriticityProps) => {
+    return (
+      <ButtonBase
+              id={id}
+              component={RouterLink}
+              to={to}
+              disableRipple={true}
+              sx={Object.assign(
+                {
+                  width: theme.spacing(6),
+                  height: theme.spacing(6),
+                  borderRadius: theme.spacing(1),
+                  color: theme.palette.secondary.main,
+                  transition: theme.transitions.create(['background-color', 'color']),
+                  border: '2px solid transparent',
+                },
+                active
+                  ? {
+                      background: lighten(theme.palette.background.default, 0.05),
+                      color: theme.palette.common.white,
+                    }
+                  : {}
+              )}
+            ></ButtonBase>
+      nodeCriticity.V_Crit + nodeCriticity.P_Crit + nodeCriticity.S_Crit
+    )
+  }*/
   const addToToolTip = (lineageDataset: LineageDataset, dataset: Dataset) => {
     return (
       <foreignObject>
@@ -126,14 +197,36 @@ const TableLineageDatasetNode = ({
 
   return (
     <g>
+      {nodeCriticity? 
       <Box
         component={'rect'}
         sx={{
           x: 0,
           y: 0,
           width: node.width,
-          height: node.height,
-          filter: isSelected ? `drop-shadow( 0 0 4px ${theme.palette.primary.main})` : 'none',
+          height: node.height +10,
+          filter: dropShadow,
+          rx: 4,
+          fill: theme.palette.background.paper,
+          stroke: 'white',      // ← bordure blanche
+          strokeWidth: isSelected ? 1 : 0,
+          cursor: 'pointer',
+          transition: 'all 0.3',
+        }}
+        cursor={'pointer'}
+        onClick={handleClick}
+      />
+      : 
+      <Box
+        component={'rect'}
+        sx={{
+          x: 0,
+          y: 0,
+          width: node.width,
+          height: node.height + 10,
+          filter: null,
+          stroke: 'white',      
+          strokeWidth: isSelected ? 1 : 0,
           rx: 4,
           fill: theme.palette.background.paper,
           cursor: 'pointer',
@@ -142,11 +235,13 @@ const TableLineageDatasetNode = ({
         cursor={'pointer'}
         onClick={handleClick}
       />
+      }
+      
       <Box
         component={'rect'}
         x={0}
         y={0}
-        height={24}
+        height={34}
         width={24}
         sx={{ rx: 4, fill: theme.palette.info.main }}
       />
@@ -158,11 +253,11 @@ const TableLineageDatasetNode = ({
         width={ICON_SIZE}
         height={ICON_SIZE}
         x={6}
-        y={ICON_SIZE / 2}
+        y={ICON_SIZE / 2 + 5}
         color={theme.palette.common.white}
         onClick={handleClick}
       />
-      <foreignObject width={16} height={24} x={node.width - 18} y={0}>
+      <foreignObject width={16} height={34} x={node.width - 18} y={0}>
         <MQTooltip title={isCollapsed ? 'Expand' : 'Collapse'} placement={'top'}>
           <IconButton
             sx={{ width: 10, height: 10 }}
@@ -215,9 +310,26 @@ const TableLineageDatasetNode = ({
           <text fontSize='8' fill={'white'} x={28} y={20} cursor={'pointer'} onClick={handleClick}>
             {truncateText(node.data.dataset.name, 15)}
           </text>
+          <text fontSize='8' fill={'white'} x={28} y={30} cursor={'pointer'} onClick={handleClick}>
+            {(nodeCriticity?.P_Crit && nodeCriticity?.S_Crit && nodeCriticity?.V_Crit) ? (
+            `V : ${nodeCriticity?.V_Crit}, P : ${nodeCriticity?.P_Crit}, S : ${nodeCriticity?.S_Crit}`
+          ) : ("Missing Tags")}
+          </text>
         </g>
       </MQTooltip>
-
+      <DatasetWarningBox
+              node={node}
+              theme={theme}
+              handleClick={handleClick}
+              ICON_SIZE={16}
+              warnings={
+                [
+                  !(nodeCriticity?.P_Crit && nodeCriticity?.S_Crit && nodeCriticity?.V_Crit), 
+                  !(nodeDataset?.description),
+                  !(nodeDataset?.fields?.every(field => !!field.description)),
+                  !(nodeDataset?.fields?.every(field => !!field.type)),
+                ]}
+            />
       {!isCompact &&
         node.data.dataset.fields.map((field, index) => {
           return (
@@ -226,12 +338,13 @@ const TableLineageDatasetNode = ({
               fontSize='8'
               fill={THEME_EXTRA.typography.subdued}
               x={10}
-              y={14 + 10 + 10 * (index + 1)}
+              y={14 + 10 + 10 * (index + 1) + 10}
             >
-              - {truncateText(field.name, 20)}
+              - {truncateText(field.name, 20)} {field.tags.length > 0 ? (<>Tags : {field.tags.map(tag =>tag+" ")}</> ): ""}
             </text>
           )
         })}
+        
     </g>
   )
 }

@@ -97,7 +97,33 @@ search:
 
 # Fill in with custom tags. Below, we have provided some sample tags to get started.
 tags:
-  - name: PII
-    description: Personally identifiable information
-  - name: SENSITIVE
-    description: Contains sensitive information
+  - name: P1
+    description: Donnée.s Personnelle.s de criticité faible
+  - name: P2
+    description: Donnée.s Personnelle.s de criticité moyenne
+  - name: P3
+    description: Donnée.s Personnelle.s de criticité élevée
+  - name: P4
+    description: Donnée.s Personnelle.s de criticité importante
+  - name: P5
+    description: Donnée.s Personnelle.s de criticité très importante
+  - name: V1
+    description: Donnée.s Vitale.s de criticité faible
+  - name: V2
+    description: Donnée.s Vitale.s de criticité moyenne
+  - name: V3
+    description: Donnée.s Vitale.s de criticité élevée
+  - name: V4
+    description: Donnée.s Vitale.s de criticité importante
+  - name: V5
+    description: Donnée.s Vitale.s de criticité très importante
+  - name: S1
+    description: Donnée.s Stratégique.s de criticité faible
+  - name: S2
+    description: Donnée.s Stratégique.s de criticité moyenne
+  - name: S3
+    description: Donnée.s Stratégique.s de criticité élevée
+  - name: S4
+    description: Donnée.s Stratégique.s de criticité importante
+  - name: S5
+    description: Donnée.s Stratégique.s de criticité très importante

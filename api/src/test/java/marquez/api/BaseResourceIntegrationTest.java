@@ -74,8 +74,22 @@ abstract class BaseResourceIntegrationTest {
   static final String CONFIG_FILE_PATH = ResourceHelpers.resourceFilePath(CONFIG_FILE);
 
   /* Tags defined in 'config.test.yml'. */
-  static final Tag PII = new Tag("PII", "Personally identifiable information");
-  static final Tag SENSITIVE = new Tag("SENSITIVE", "Contains sensitive information");
+  static final Tag P1 = new Tag("P1", "Donnée.s Personnelle.s de criticité faible");
+  static final Tag P2 = new Tag("P2", "Donnée.s Personnelle.s de criticité moyenne");
+  static final Tag P3 = new Tag("P3", "Donnée.s Personnelle.s de criticité élevée");
+  static final Tag P4 = new Tag("P4", "Donnée.s Personnelle.s de criticité importante");
+  static final Tag P5 = new Tag("P5", "Donnée.s Personnelle.s de criticité très importante");
+  static final Tag V1 = new Tag("V1", "Donnée.s Vitale.s de criticité faible");
+  static final Tag V2 = new Tag("V2", "Donnée.s Vitale.s de criticité moyenne");
+  static final Tag V3 = new Tag("V3", "Donnée.s Vitale.s de criticité élevée");
+  static final Tag V4 = new Tag("V4", "Donnée.s Vitale.s de criticité importante");
+  static final Tag V5 = new Tag("V5", "Donnée.s Vitale.s de criticité très importante");
+  static final Tag S1 = new Tag("S1", "Donnée.s Stratégique.s de criticité faible");
+  static final Tag S2 = new Tag("S2", "Donnée.s Stratégique.s de criticité moyenne");
+  static final Tag S3 = new Tag("S3", "Donnée.s Stratégique.s de criticité élevée");
+  static final Tag S4 = new Tag("S4", "Donnée.s Stratégique.s de criticité importante");
+  static final Tag S5 = new Tag("S5", "Donnée.s Stratégique.s de criticité très importante");
+
 
   // Namespace
   static String NAMESPACE_NAME;
@@ -133,9 +147,9 @@ abstract class BaseResourceIntegrationTest {
     DB_TABLE_NAME = DB_TABLE_ID.getName();
     DB_TABLE_PHYSICAL_NAME = DB_TABLE_NAME;
     DB_TABLE_DESCRIPTION = newDescription();
-    DB_TABLE_TAGS = ImmutableSet.of(PII.getName());
+    DB_TABLE_TAGS = ImmutableSet.of(P1.getName());
     DB_TABLE_CONNECTION_URL = newConnectionUrlFor(SourceType.of("POSTGRESQL"));
-    DB_TABLE_FIELDS = ImmutableList.of(newFieldWith(SENSITIVE.getName()), newField());
+    DB_TABLE_FIELDS = ImmutableList.of(newFieldWith(V1.getName()), newField());
     DB_TABLE_META =
         DbTableMeta.builder()
             .physicalName(DB_TABLE_PHYSICAL_NAME)
@@ -150,7 +164,7 @@ abstract class BaseResourceIntegrationTest {
     JOB_TYPE = JobType.BATCH;
     JOB_LOCATION = newLocation();
     JOB_DESCRIPTION = newDescription();
-    JOB_TAGS = ImmutableSet.of(PII.getName());
+    JOB_TAGS = ImmutableSet.of(P1.getName());
     JOB_META =
         JobMeta.builder()
             .type(JOB_TYPE)

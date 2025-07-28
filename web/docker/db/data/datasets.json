@@ -19,12 +19,12 @@
       {"name": "created_at", "type": "TIMESTAMP", "tags": [], "description": "An ISO-8601 timestamp representing the date/time the customer was created."},
       {"name": "updated_at", "type": "TIMESTAMP", "tags": [], "description": "An ISO-8601 timestamp representing the date/time the customer was updated."},
       {"name": "name", "type": "VARCHAR", "tags": [], "description": "The name of the customer."},
-      {"name": "email", "type": "VARCHAR", "tags": ["PII"], "description": "The email address of the customer."},
+      {"name": "email", "type": "VARCHAR", "tags": ["P1"], "description": "The email address of the customer."},
       {"name": "address", "type": "VARCHAR", "tags": [], "description": "The address of the customer."},
       {"name": "phone", "type": "VARCHAR", "tags": [], "description": "The phone number of the customer."},
       {"name": "city_id", "type": "INT", "tags": [], "description": "The ID of the city related to the customer."}
     ],
-    "tags": ["PII"]
+    "tags": ["P1"]
   },
   {
     "type": "DB_TABLE",

@@ -36,8 +36,8 @@ public class TagResourceIntegrationTest extends BaseResourceIntegrationTest {
     // (1) List tags.
     final Set<Tag> tags = MARQUEZ_CLIENT.listTags();
 
-    // (2) Ensure tags 'PII', 'SENSITIVE' defined in 'config.test.yml' are present.
-    assertThat(tags).contains(PII, SENSITIVE);
+    // (2) Ensure tags 'P1', 'V1' defined in 'config.test.yml' are present.
+    assertThat(tags).contains(P1, V1);
   }
 
   @Test
@@ -60,8 +60,8 @@ public class TagResourceIntegrationTest extends BaseResourceIntegrationTest {
     assertThat(taggedDeleteDataset.getTags()).doesNotContain("TESTDATASETTAG");
     // assert the number of tags should be 1
     assertThat(taggedDeleteDataset.getTags()).hasSize(1);
-    // assert that only PII remains
-    assertThat(taggedDeleteDataset.getTags()).containsExactly("PII");
+    // assert that only P1 remains
+    assertThat(taggedDeleteDataset.getTags()).containsExactly("");
   }
 
   @Test
@@ -98,8 +98,8 @@ public class TagResourceIntegrationTest extends BaseResourceIntegrationTest {
         .doesNotContain("TESTFIELDTAG");
     // assert the number of tags on the field should be 1
     assertThat(taggedDatasetFieldDelete.getFields().get(0).getTags()).hasSize(1);
-    // assert that only SENSITIVE remains
-    assertThat(taggedDatasetFieldDelete.getFields().get(0).getTags()).containsExactly("SENSITIVE");
+    // assert that only V1 remains
+    assertThat(taggedDatasetFieldDelete.getFields().get(0).getTags()).containsExactly("V1");
   }
 
   @Test
