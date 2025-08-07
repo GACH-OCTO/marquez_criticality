@@ -23,6 +23,7 @@ import Jobs from '../routes/jobs/Jobs'
 import React, { ReactElement } from 'react'
 import Sidenav from './sidenav/Sidenav'
 import TableLevel from '../routes/table-level/TableLevel'
+import WarningLevel from '../routes/table-level/WarningLevel'
 import Toast from './Toast'
 import createRootReducer from '../store/reducers'
 import createSagaMiddleware from 'redux-saga'
@@ -72,6 +73,7 @@ const App = (): ReactElement => {
                       element={<ColumnLevel />}
                     />
                     <Route path={'/lineage/:nodeType/:namespace/:name'} element={<TableLevel />} />
+                    <Route path={'/lineage/:nodeType/warning/:namespace/:name'} element={<WarningLevel />} />
                     <Route path='*' element={<NotFound />} />
                   </Routes>
                   <Toast />

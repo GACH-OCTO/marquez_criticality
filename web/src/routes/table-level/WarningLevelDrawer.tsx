@@ -6,9 +6,9 @@ import { LineageGraph } from '../../types/api'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { useSearchParams } from 'react-router-dom'
-import DatasetDetailPage from '../../components/datasets/DatasetDetailPage'
 import JobDetailPage from '../../components/jobs/JobDetailPage'
 import React from 'react'
+import WarningDetailPage from '../../components/datasets/WarningDetailPage'
 
 const WIDTH = 800
 
@@ -33,8 +33,8 @@ const TableLevelDrawer = ({ lineageGraph }: StateProps & DispatchProps) => {
 
   return (
     <Box width={`${WIDTH}px`}>
-      {(dataset && node) ? (
-        <DatasetDetailPage lineageDataset={dataset} lineageNode={node} />
+      {dataset ? (
+        <WarningDetailPage lineageDataset={dataset} />
       ) : (
         <>{job && <JobDetailPage lineageJob={job} />}</>
       )}

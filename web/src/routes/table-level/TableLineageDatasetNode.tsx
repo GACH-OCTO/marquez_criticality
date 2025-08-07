@@ -19,10 +19,10 @@ import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { alpha } from '@mui/material/styles';
 import React, { useEffect, useState } from 'react'
 import { DatasetWarningBox} from './DatasetWarningBox'
+import { Box, Chip } from '@mui/material'
 import {
   getDataset,
 } from '../../store/requests'
-import Box from '@mui/system/Box'
 import IconButton from '@mui/material/IconButton'
 import MQTooltip from '../../components/core/tooltip/MQTooltip'
 import MqStatus from '../../components/core/status/MqStatus'
@@ -38,18 +38,23 @@ interface StateProps {
   dataset: Dataset
 }
 
-interface nodeCriticityProps {
+export interface nodeCriticityProps {
   V_Crit: number | null
   P_Crit: number | null 
   S_Crit: number | null
 }
-const extractCrit = (tags: string[], prefix: string): number | null =>
+export const extractCrit = (tags: string[], prefix: string): number | null =>
   tags.reduce((acc, tag) => {
     const match = tag.match(new RegExp(`^${prefix}(\\d)$`));
     return acc ?? (match ? parseInt(match[1], 10) : null);
   }, null);
 
-function extractCritValues(tags: string[]): nodeCriticityProps {
+export const extractCritTagNum = (tags: string[] | undefined, prefix: string): number => {
+  return tags?.filter(tag => tag.startsWith(prefix)).length || 0;
+};
+
+
+export function extractCritValues(tags: string[]): nodeCriticityProps {
   return {
     V_Crit: extractCrit(tags, 'V'),
     P_Crit: extractCrit(tags, 'P'),
@@ -94,6 +99,13 @@ const TableLineageDatasetNode = ({
       )}?tableLevelNode=${encodeURIComponent(node.id)}`
     )
   }
+  const handleWarningClick = () => {
+    navigate(
+      `/lineage/dataset/warning/${encodeURIComponent(node.data.dataset.namespace)}/${encodeURIComponent(
+        node.data.dataset.name
+      )}?tableLevelNode=${encodeURIComponent(node.id)}`
+    )
+  }
 
   const nodeCriticity = nodeDataset?.tags?.length ? extractCritValues(nodeDataset.tags) : null;
 
@@ -106,34 +118,6 @@ const TableLineageDatasetNode = ({
     `
     : 'none';
 
-
-  /*const displayTags = (nodeCriticity: nodeCriticityProps) => {
-    return (
-      <ButtonBase
-              id={id}
-              component={RouterLink}
-              to={to}
-              disableRipple={true}
-              sx={Object.assign(
-                {
-                  width: theme.spacing(6),
-                  height: theme.spacing(6),
-                  borderRadius: theme.spacing(1),
-                  color: theme.palette.secondary.main,
-                  transition: theme.transitions.create(['background-color', 'color']),
-                  border: '2px solid transparent',
-                },
-                active
-                  ? {
-                      background: lighten(theme.palette.background.default, 0.05),
-                      color: theme.palette.common.white,
-                    }
-                  : {}
-              )}
-            ></ButtonBase>
-      nodeCriticity.V_Crit + nodeCriticity.P_Crit + nodeCriticity.S_Crit
-    )
-  }*/
   const addToToolTip = (lineageDataset: LineageDataset, dataset: Dataset) => {
     return (
       <foreignObject>
@@ -310,17 +294,37 @@ const TableLineageDatasetNode = ({
           <text fontSize='8' fill={'white'} x={28} y={20} cursor={'pointer'} onClick={handleClick}>
             {truncateText(node.data.dataset.name, 15)}
           </text>
-          <text fontSize='8' fill={'white'} x={28} y={30} cursor={'pointer'} onClick={handleClick}>
-            {(nodeCriticity?.P_Crit && nodeCriticity?.S_Crit && nodeCriticity?.V_Crit) ? (
-            `V : ${nodeCriticity?.V_Crit}, P : ${nodeCriticity?.P_Crit}, S : ${nodeCriticity?.S_Crit}`
-          ) : ("Missing Tags")}
-          </text>
+          <foreignObject x={node.width - 80} y={20} width={140} height={15}>
+            <Box display="flex" flexDirection="row" flexWrap="wrap">
+              {nodeCriticity && Object.keys(nodeCriticity).map((key) => {
+                const value = nodeCriticity[key as keyof nodeCriticityProps];
+                return (
+                  <MQTooltip title={`${key}: ${value}`} key={`${node.data.dataset.name}-${key}-${value}`}>
+                    <Chip
+                      color="primary"
+                      variant="outlined"
+                      label={`${key[0]}: ${value}`}
+                      size="small"
+                      sx={{
+                        fontSize: '8px', // <- ici
+                        height: 12,
+                        '& .MuiChip-label': {
+                          padding: '0 2px',
+                        },
+                        margin: '2px',
+                      }}
+                    />
+                  </MQTooltip>
+                );
+              })}
+            </Box>
+          </foreignObject>
         </g>
       </MQTooltip>
       <DatasetWarningBox
               node={node}
               theme={theme}
-              handleClick={handleClick}
+              handleClick={handleWarningClick}
               ICON_SIZE={16}
               warnings={
                 [
@@ -328,6 +332,9 @@ const TableLineageDatasetNode = ({
                   !(nodeDataset?.description),
                   !(nodeDataset?.fields?.every(field => !!field.description)),
                   !(nodeDataset?.fields?.every(field => !!field.type)),
+                  !!(extractCritTagNum(nodeDataset?.tags, "V") > 1),
+                  !!(extractCritTagNum(nodeDataset?.tags, "P") > 1),
+                  !!(extractCritTagNum(nodeDataset?.tags, "S") > 1),
                 ]}
             />
       {!isCompact &&

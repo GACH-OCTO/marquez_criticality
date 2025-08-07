@@ -1,0 +1,5 @@
+name,description,uri,maxV,maxP,maxS,location,local,enterprise_nationality,DB_owner
+OCTO april report DB,This is the description of the DB of project octo april report,duckdb://octo_april_report.duckdb,3,5,2,France,TRUE,null,Email@gmail.com
+Second Project,This is the description of the DB of project Second Project,duckdb://SecondProject.duckdb,2,4,5,USA,FALSE,null,
+AWS,This is the AWS bucket ,https://nom-du-seau.s3.region.amazonaws.com,4,2,1,Irland,FALSE,USA,
+GCP,This is the GCP cloud ,https://storage.googleapis.com/nom-du-bucket/objet,3,1,3,UK,FALSE,USA,

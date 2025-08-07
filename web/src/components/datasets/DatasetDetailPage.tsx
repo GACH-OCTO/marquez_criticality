@@ -18,7 +18,7 @@ import { CircularProgress } from '@mui/material'
 import { Dataset } from '../../types/api'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { IState } from '../../store/reducers'
-import { LineageDataset } from '../../types/lineage'
+import { LineageDataset, LineageNode } from '../../types/lineage'
 import { MqInfo } from '../core/info/MqInfo'
 import { alpha } from '@mui/material/styles'
 import { bindActionCreators } from 'redux'
@@ -51,9 +51,13 @@ import MqText from '../core/text/MqText'
 import React, { ChangeEvent, FunctionComponent, useEffect, useState } from 'react'
 import RuleIcon from '@mui/icons-material/Rule'
 import StorageIcon from '@mui/icons-material/Storage'
+import { downloadHTML } from '../report/reportPage'
+import { useSelector } from 'react-redux'
+import html2canvas from 'html2canvas'
 
 interface StateProps {
   lineageDataset: LineageDataset
+  lineageNode: LineageNode
   dataset: Dataset
   isDatasetLoading: boolean
   datasets: IState['datasets']
@@ -91,6 +95,7 @@ const DatasetDetailPage: FunctionComponent<IProps> = (props) => {
     deleteDataset,
     dialogToggle,
     lineageDataset,
+    lineageNode,
     tabIndex,
     setTabIndex,
   } = props
@@ -124,6 +129,32 @@ const DatasetDetailPage: FunctionComponent<IProps> = (props) => {
   const handleChange = (_: ChangeEvent, newValue: number) => {
     setTabIndex(newValue)
   }
+
+  const tagData = useSelector((state: IState) =>
+        state.tags.tags.sort((a, b) => a.name.localeCompare(b.name))
+      )
+
+  const handleDownload = async () => {
+  const targetElement = document.querySelector('.css-dt8kbw') as HTMLElement// <- cible ton graphe lineage ici
+
+  if (!targetElement) {
+    console.error("Element 'lineage-graph' introuvable.")
+    return
+  }
+
+  try {
+    const canvas = await html2canvas(targetElement)
+    const dataUrl = canvas.toDataURL('image/png')
+
+    // Appelle la fonction de génération du HTML avec image
+    await downloadHTML(dataset, lineageDataset, tagData, lineageNode, dataUrl)
+  } catch (error) {
+    console.error('Erreur lors de la capture du graph lineage:', error)
+  }
+}
+
+
+
 
   if (!dataset || isDatasetLoading) {
     return (
@@ -179,6 +210,21 @@ const DatasetDetailPage: FunctionComponent<IProps> = (props) => {
           </Box>
           <Box display={'flex'} alignItems={'center'}>
             <Box mr={1}>
+              <Button
+                variant='outlined'
+                size={'small'}
+                sx={{
+                  borderColor: theme.palette.warning.main,
+                  color: theme.palette.warning.main,
+                  '&:hover': {
+                    borderColor: alpha(theme.palette.warning.main, 0.3),
+                    backgroundColor: alpha(theme.palette.warning.main, 0.3),
+                  },
+                }}
+                onClick={handleDownload}
+              >
+                {'REPORT'}
+              </Button>
               <Button
                 variant='outlined'
                 size={'small'}

@@ -97,63 +97,13 @@ const TableLineageJobNode = ({ node, fetchDataset, resetDataset }: TableLineageJ
   const multipleInputDataset = prevDatasetNode.length > 1
   
   const isSelected = name === node.data.job.name && namespace === node.data.job.namespace
-  /*
-  let inputDatasets: any[] = [];
-  if (node.data.job.inputs) {
-    inputDatasets = node.data.job.inputs.map(input => {
-      return () => fetchDataset(input.namespace, input.name);
-    });
-  }
-*/
+  
   const handleClick = () => {
     navigate(
       `/lineage/job/${encodeURIComponent(node.data.job.namespace)}/${encodeURIComponent(
         node.data.job.name
       )}?tableLevelNode=${encodeURIComponent(node.id)}`
     )
-     
-    /**
-    // Téléchargement de fichier (Sorties de FetchDataset autour d"'un job)
-
-    const fileName = `${node.data.job.name}.json`;
-    const content = {
-      inputDatasets
-    };
-    const jsonContent = JSON.stringify(content, null, 2);
-    const fileType = 'application/json';
-
-    const blob = new Blob([jsonContent], { type: fileType });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = fileName;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-
-
-    // Téléchargement de fichier (lineage autour d'un job)
-    const fileName = `${node.data.job.name}.json`;
-    const content = {
-      [node.data.job.name]: {
-        inputs: node.data.job.inputs,
-        outputs: node.data.job.outputs
-      }
-    };
-    const jsonContent = JSON.stringify(content, null, 2);
-    const fileType = 'application/json';
-
-    const blob = new Blob([jsonContent], { type: fileType });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = fileName;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-     */
   }
 
   const renderCriticities = (node: PositionedNode<"job", TableLineageJobNodeData>, theme: Theme, handleClick: () => void, ICON_SIZE: number , criticities: CriticityProps[]) => {
