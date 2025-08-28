@@ -147,7 +147,8 @@ const DatasetDetailPage: FunctionComponent<IProps> = (props) => {
     const dataUrl = canvas.toDataURL('image/png')
 
     // Appelle la fonction de génération du HTML avec image
-    await downloadHTML(dataset, lineageDataset, tagData, lineageNode, dataUrl)
+    //await downloadHTML(dataset, lineageDataset, tagData, lineageNode, dataUrl)
+    await downloadHTML(lineageDataset.namespace, lineageDataset.name, tagData, dataUrl)
   } catch (error) {
     console.error('Erreur lors de la capture du graph lineage:', error)
   }
