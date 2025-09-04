@@ -131,6 +131,20 @@ This project aims to organize and structure the metadata of multiple projects. I
 ## Deployment 
 [Follow the modified quickstart](#quickstart)
 
+## Generate OpenLineage Events 
+If you would like to generate a basic exemple of data using python. I added a folder named `ol-events-python/`. You can create a venv 
+```bash
+python -m venv venv
+source venv/bin/activate   # (or venv\Scripts\activate on Windows)
+```
+Dependencies
+```bash
+python -m pip install -r requirements.txt
+```
+Run the file to send he events. (The docker has to be up)
+```bash
+python .\generate_events.py 
+```
 
 End of Marquez Criticality README 
 ---- 
@@ -181,8 +195,7 @@ Want to be added? Send a pull request our way!
 
 Marquez provides a simple way to collect and view _dataset_, _job_, and _run_ metadata using [OpenLineage](https://openlineage.io). The easiest way to get up and running is with Docker. From the base of the Marquez repository, run:
 
-Use the `--build` flag to build images from source (for Marquez Criticality)
-
+**Use the `--build` flag to build images from source (for Marquez Criticality)**
 ### MacOS and Linux users:
 ```bash
 $ ./docker/up.sh --build
