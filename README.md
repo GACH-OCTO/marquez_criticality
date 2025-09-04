@@ -22,6 +22,11 @@ The levels of criticality are defined from 1 to 5. Tags have been created to lab
 ### Interface
 Marquez already provided a solid interface. As I added new elements, I needed to adjust or implement additional features:
 
+### Demo - Interface
+<p align="center">
+  <img src="./web/docs/demo_interface.gif">
+</p>
+
 - **Visual Criticality**: To make criticality easier to interpret, each type of criticality was assigned a specific color. In the lineage graph, I added a shadow behind each dataset, with the intensity increasing according to the dataset’s criticality level. Allowing the users to grasp the overall picture at a glance.
 - **Warnings**: I introduced warnings related to criticality, particularly for missing data information. Users can view a dataset’s warnings by clicking the warning icon, which opens a page with detailed explanations.
 - **Criticality Evolution**: I implemented a way to represent how jobs affect the criticality between datasets (increasing, decreasing, or unchanged). Arrows were added to each job to indicate its impact on criticality across categories.
@@ -51,6 +56,11 @@ The Report page serves as an automated data governance deliverable, integrating 
 - **Lineage Facets**: All facets across the lineage, with indicators showing how far each job or dataset facet is from the original dataset. This allows users to explore the data in more depth.
 
 - **Connected Nodes**: A list of all nodes directly linked to the original dataset (the subject of the report).
+
+### Demo - Report Page
+<p align="center">
+  <img src="./web/docs/demo_report_page.gif">
+</p>
 
 ## Deduction & Recommandation [UNCOMPLETED]
 By collecting metadata from the Analytics Engineering Project, the goal is to provide data owners, data officers, and governance stakeholders with all relevant information in one place. By applying rules and additional context, the project will generate more complete and detailed recommendations tailored to each dataset.
@@ -127,6 +137,10 @@ When a dataset is critical for business strategy or decision-making (e.g., custo
 
 ## Use Case 
 This project aims to organize and structure the metadata of multiple projects. It can be implemented as a client-facing solution, support teams in visualizing and managing their data engineering projects, or assist our own team in delivering Analytics Engineering projects.
+
+<p align="center">
+  <img src="./web/docs/demo_crit_tagging.gif">
+</p>
 
 ## Deployment 
 [Follow the modified quickstart](#quickstart)
