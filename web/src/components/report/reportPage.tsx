@@ -532,7 +532,7 @@ export const downloadHTML = async (namespace: string, datasetName: string, tagDa
           ${warningsSection}
         </details>
 
-        <h2>BOOP - Lineage Progression</h2>
+        <h2>Lineage Progression</h2>
         <details open>
           <summary>Prédécesseurs complets</summary>
           <ul style="list-style-type:none; padding-left:20px;">

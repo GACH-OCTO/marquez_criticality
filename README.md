@@ -1,3 +1,142 @@
+# Marquez Criticality
+[made by GACH, intern of OCTO Technology in 2025]
+
+**Marquez Criticality** is an extension of an **open source project**: "Marquez". 
+
+Goal: "Analysis of data flow criticality through active interpretation of metadata"
+
+Since this project builds upon Marquez, this presentation will cover only the **enhancements** introduced to the parent project.
+
+## Enhancements
+### Criticality
+As the name suggest it the most important part is on the adding of criticality.
+
+We defined 3 types of criticality:
+
+- **Vital**: Data is considered critically vital if timely access to it is essential. Inability to access such data for a period of time could disrupt work or impact the organization. 
+- **Personal**: Data is considered critically personal if it contains information about identifiable individuals. This is related to—but not necessarily identical with—the GDPR definition of personal data.
+- **Strategic**: Data is considered critically strategic if it contains information useful for strategic decision-making, such as client or loan data, or confidential information. In these scenarios, the data is defined as critically strategic.
+
+The levels of criticality are defined from 1 to 5. Tags have been created to label datasets according to their respective criticality level for each category. It is the user’s responsibility to tag each dataset (the tag will be saved, so it only needs to be done once). These tags will affect both the stored data and how it is displayed in the app’s interface and reports.
+
+### Interface
+Marquez already provided a solid interface. As I added new elements, I needed to adjust or implement additional features:
+
+- **Visual Criticality**: To make criticality easier to interpret, each type of criticality was assigned a specific color. In the lineage graph, I added a shadow behind each dataset, with the intensity increasing according to the dataset’s criticality level. Allowing the users to grasp the overall picture at a glance.
+- **Warnings**: I introduced warnings related to criticality, particularly for missing data information. Users can view a dataset’s warnings by clicking the warning icon, which opens a page with detailed explanations.
+- **Criticality Evolution**: I implemented a way to represent how jobs affect the criticality between datasets (increasing, decreasing, or unchanged). Arrows were added to each job to indicate its impact on criticality across categories.
+
+All of these improvements were designed to enhance readability and make it easier to understand how criticality evolves along the data flow.
+
+## Report Page
+
+The Report page serves as an automated data governance deliverable, integrating criticality aspects and providing a comprehensive analysis of data flow criticality. It also includes recommendations, warnings, and commentary. The report generates a dated, human-readable summary that is easy to share or store, presented as a long scrolling page.
+
+### Components
+
+- **Header**: Displays the dataset name, description, and criticality levels prominently in the center.
+
+- **Dataset Information:** Key details such as namespace, technical name, description, creation date, last modification, and source.
+
+- **Lineage Snapshot:** A visual snapshot of the dataset’s lineage, as shown in the main interface.
+
+- **Tags**: The list of tags associated with the dataset.
+
+- **Warnings**: A section listing dataset warnings, including their names, descriptions, and potential consequences.
+
+- **Lineage Progression**: A tree view of predecessors and successors, helping contextualize the dataset within its lineage.
+
+- **Recommendations**: Guidance for each type of criticality, based on the dataset’s facets and criticality level [UNCOMPLETED].
+
+- **Lineage Facets**: All facets across the lineage, with indicators showing how far each job or dataset facet is from the original dataset. This allows users to explore the data in more depth.
+
+- **Connected Nodes**: A list of all nodes directly linked to the original dataset (the subject of the report).
+
+## Deduction & Recommandation [UNCOMPLETED]
+By collecting metadata from the Analytics Engineering Project, the goal is to provide data owners, data officers, and governance stakeholders with all relevant information in one place. By applying rules and additional context, the project will generate more complete and detailed recommendations tailored to each dataset.
+
+Examples of Recommendations by Criticality
+
+### Vital
+When a dataset is classified as vital, timely access is essential. Recommended actions include:
+
+- Ensure replication or continuity plans in case the dataset becomes unavailable.
+
+- Strictly manage modification and deletion rights.
+
+- Set up a historical dataset (audit trail) to track deletions or modifications of the main dataset.
+
+- Maintain an updated list of responsible users (or a designated data steward).
+
+- Define clear communication and backup procedures to apply in case of downtime.
+
+### Personal
+When a dataset contains personal information, it must comply with GDPR and similar regulations. Recommended actions include:
+
+- Verify who has access to the data and for what purpose.
+
+- Ensure that individuals whose data is collected are informed of its use.
+
+- Assess whether the dataset contains:
+
+  - Direct identifiers (e.g., names, IDs, emails).
+
+  - Indirect identifiers (e.g., data combinations that may re-identify individuals).
+
+- Consider developing classification models (e.g., using LLMs) to automatically detect direct and indirect personal data at the column level.
+
+- Verify whether personal data is stored outside the EU. If so, assess legal implications and compliance (e.g., Standard Contractual Clauses, Binding Corporate Rules).
+
+- Evaluate whether sensitive data is present (e.g., ethnicity, politics, religion, health, biometrics, sexual orientation). If so, ensure compliance with GDPR Article 9 conditions.
+
+- Ensure:
+
+  - Lawful basis and explicit consent where required.
+
+  - Data minimization (only collect what is strictly necessary).
+
+  - Accuracy, relevance, and up-to-dateness of personal data.
+
+  - Respect for data subject rights (access, rectification, objection, erasure).
+
+  - Security measures (encryption, access control, system protection).
+
+  - Confidentiality obligations for all with access to personal data.
+
+  - Existence of a DPO (Data Protection Officer) if required.
+
+  - Regular Data Protection Impact Assessments (DPIA).
+
+  - Maintenance of a processing activities register.
+
+  - Limited retention period, with data erased once no longer needed.
+
+### Strategic
+When a dataset is critical for business strategy or decision-making (e.g., customer data, loan data, confidential information), recommended actions include:
+
+- Protect and strictly control access.
+
+- Monitor usage and ensure appropriate confidentiality measures.
+
+- Define data ownership and accountability.
+
+- Incorporate additional security measures (segregated storage, role-based access).
+
+- Document how this data contributes to business decisions, ensuring traceability.
+
+
+## Use Case 
+This project aims to organize and structure the metadata of multiple projects. It can be implemented as a client-facing solution, support teams in visualizing and managing their data engineering projects, or assist our own team in delivering Analytics Engineering projects.
+
+## Deployment 
+[Follow the modified quickstart](#quickstart)
+
+
+End of Marquez Criticality README 
+---- 
+
+
+
 <div align="center">
   <img src="./docs/assets/images/marquez-logo.png" width="500px" />
   <a href="https://lfaidata.foundation/projects">
@@ -42,10 +181,11 @@ Want to be added? Send a pull request our way!
 
 Marquez provides a simple way to collect and view _dataset_, _job_, and _run_ metadata using [OpenLineage](https://openlineage.io). The easiest way to get up and running is with Docker. From the base of the Marquez repository, run:
 
-### MacOS and Linux users:
+Use the `--build` flag to build images from source (for Marquez Criticality)
 
+### MacOS and Linux users:
 ```bash
-$ ./docker/up.sh
+$ ./docker/up.sh --build
 ```
 
 ### Windows users:
@@ -61,7 +201,7 @@ Verify that Bash and PostgreSQL have been installed and added to the PATH variab
 Start all services:
 
 ```bash
-$ sh ./docker/up.sh
+$ sh ./docker/up.sh --build
 ```
 
 > **Tip:** Use the `--build` flag to build images from source, and/or `--seed` to start Marquez with sample lineage metadata. For a more complete example using the sample metadata, please follow our [quickstart](https://marquezproject.github.io/marquez/quickstart.html) guide.
