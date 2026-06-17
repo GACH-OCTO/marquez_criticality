@@ -1,23 +1,23 @@
-# Marquez Criticality
+# Marquez Criticity
 [made by GACH, intern of OCTO Technology in 2025 also known as Gabriel CHABREDIER]
 
-**Marquez Criticality** is an extension of an **open source project**: "Marquez". 
+**Marquez Criticity** is an extension of an **open source project**: "Marquez". 
 
-Goal: "Analysis of data flow criticality through active interpretation of metadata"
+Goal: "Analysis of data flow criticity through active interpretation of metadata"
 
 Since this project builds upon Marquez, this presentation will cover only the **enhancements** introduced to the parent project.
 
 ## Enhancements
-### Criticality
-As the name suggest it the most important part is on the adding of criticality.
+### Criticity
+As the name suggest it the most important part is on the adding of criticity.
 
-We defined 3 types of criticality:
+We defined 3 types of criticity:
 
 - **Vital**: Data is considered critically vital if timely access to it is essential. Inability to access such data for a period of time could disrupt work or impact the organization. 
 - **Personal**: Data is considered critically personal if it contains information about identifiable individuals. This is related to—but not necessarily identical with—the GDPR definition of personal data.
 - **Strategic**: Data is considered critically strategic if it contains information useful for strategic decision-making, such as client or loan data, or confidential information. In these scenarios, the data is defined as critically strategic.
 
-The levels of criticality are defined from 1 to 5. Tags have been created to label datasets according to their respective criticality level for each category. It is the user’s responsibility to tag each dataset (the tag will be saved, so it only needs to be done once). These tags will affect both the stored data and how it is displayed in the app’s interface and reports.
+The levels of criticity are defined from 1 to 5. Tags have been created to label datasets according to their respective criticity level for each category. It is the user’s responsibility to tag each dataset (the tag will be saved, so it only needs to be done once). These tags will affect both the stored data and how it is displayed in the app’s interface and reports.
 
 ### Interface
 Marquez already provided a solid interface. As I added new elements, I needed to adjust or implement additional features:
@@ -27,19 +27,19 @@ Marquez already provided a solid interface. As I added new elements, I needed to
   <img src="./web/docs/demo_interface.gif">
 </p>
 
-- **Visual Criticality**: To make criticality easier to interpret, each type of criticality was assigned a specific color. In the lineage graph, I added a shadow behind each dataset, with the intensity increasing according to the dataset’s criticality level. Allowing the users to grasp the overall picture at a glance.
-- **Warnings**: I introduced warnings related to criticality, particularly for missing data information. Users can view a dataset’s warnings by clicking the warning icon, which opens a page with detailed explanations.
-- **Criticality Evolution**: I implemented a way to represent how jobs affect the criticality between datasets (increasing, decreasing, or unchanged). Arrows were added to each job to indicate its impact on criticality across categories.
+- **Visual Criticity**: To make criticity easier to interpret, each type of criticity was assigned a specific color. In the lineage graph, I added a shadow behind each dataset, with the intensity increasing according to the dataset’s criticity level. Allowing the users to grasp the overall picture at a glance.
+- **Warnings**: I introduced warnings related to criticity, particularly for missing data information. Users can view a dataset’s warnings by clicking the warning icon, which opens a page with detailed explanations.
+- **Criticity Evolution**: I implemented a way to represent how jobs affect the criticity between datasets (increasing, decreasing, or unchanged). Arrows were added to each job to indicate its impact on criticity across categories.
 
-All of these improvements were designed to enhance readability and make it easier to understand how criticality evolves along the data flow.
+All of these improvements were designed to enhance readability and make it easier to understand how criticity evolves along the data flow.
 
 ## Report Page
 
-The Report page serves as an automated data governance deliverable, integrating criticality aspects and providing a comprehensive analysis of data flow criticality. It also includes recommendations, warnings, and commentary. The report generates a dated, human-readable summary that is easy to share or store, presented as a long scrolling page.
+The Report page serves as an automated data governance deliverable, integrating criticity aspects and providing a comprehensive analysis of data flow criticity. It also includes recommendations, warnings, and commentary. The report generates a dated, human-readable summary that is easy to share or store, presented as a long scrolling page.
 
 ### Components
 
-- **Header**: Displays the dataset name, description, and criticality levels prominently in the center.
+- **Header**: Displays the dataset name, description, and criticity levels prominently in the center.
 
 - **Dataset Information:** Key details such as namespace, technical name, description, creation date, last modification, and source.
 
@@ -51,7 +51,7 @@ The Report page serves as an automated data governance deliverable, integrating 
 
 - **Lineage Progression**: A tree view of predecessors and successors, helping contextualize the dataset within its lineage.
 
-- **Recommendations**: Guidance for each type of criticality, based on the dataset’s facets and criticality level [UNCOMPLETED].
+- **Recommendations**: Guidance for each type of criticity, based on the dataset’s facets and criticity level [UNCOMPLETED].
 
 - **Lineage Facets**: All facets across the lineage, with indicators showing how far each job or dataset facet is from the original dataset. This allows users to explore the data in more depth.
 
@@ -65,7 +65,7 @@ The Report page serves as an automated data governance deliverable, integrating 
 ## Deduction & Recommandation [UNCOMPLETED]
 By collecting metadata from the Analytics Engineering Project, the goal is to provide data owners, data officers, and governance stakeholders with all relevant information in one place. By applying rules and additional context, the project will generate more complete and detailed recommendations tailored to each dataset.
 
-Examples of Recommendations by Criticality
+Examples of Recommendations by Criticity
 
 ### Vital
 When a dataset is classified as vital, timely access is essential. Recommended actions include:
@@ -160,7 +160,7 @@ Run the file to send he events. (The docker has to be up)
 python .\generate_events.py 
 ```
 
-End of Marquez Criticality README 
+End of Marquez Criticity README 
 ---- 
 
 
@@ -209,7 +209,7 @@ Want to be added? Send a pull request our way!
 
 Marquez provides a simple way to collect and view _dataset_, _job_, and _run_ metadata using [OpenLineage](https://openlineage.io). The easiest way to get up and running is with Docker. From the base of the Marquez repository, run:
 
-**Use the `--build` flag to build images from source (for Marquez Criticality)**
+**Use the `--build` flag to build images from source (for Marquez Criticity)**
 ### MacOS and Linux users:
 ```bash
 $ ./docker/up.sh --build
