@@ -1,5 +1,5 @@
 # Marquez Criticality
-[made by GACH, intern of OCTO Technology in 2025]
+[made by GACH, intern of OCTO Technology in 2025 also known as Gabriel CHABREDIER]
 
 **Marquez Criticality** is an extension of an **open source project**: "Marquez". 
 
